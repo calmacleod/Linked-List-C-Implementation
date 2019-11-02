@@ -54,7 +54,33 @@ ListNode *insertToList(ListNode **head, PersonInfo *person)
 	// add code
    //
 
+	if(!*head){
 
+		ListNode *p = malloc(sizeof(ListNode));
+
+		if(!p){
+			printf("An Error has occured in allocating memory\n");
+			return NULL;
+		}
+
+		p->next = NULL;
+		p->person = *person;
+		return p;
+
+	}
+
+
+	ListNode *p = malloc(sizeof(ListNode));
+
+	if(!p){
+		printf("Error occurred in allocating memory \n");
+		return NULL;
+	}
+
+	p->person = *person;
+	p->next = (*head);
+
+	return p;
 
 }
 
@@ -86,9 +112,40 @@ person is not NULL
 
 ListNode *insertAfter(ListNode *head, char *familyName, PersonInfo *person)
 {
-	// add code 
-	int i = 4;
-	printf("These are my new changes\n");
+
+	int flag = 1;
+
+	//Find Proper Node
+	do{
+		if(  strcmp(head->person.familyName, person->familyName)){
+			flag = 0;
+			break;
+		}
+		head = head->next;
+
+	} while(head->next);
+
+	//Check if we found a spot
+	if(flag){
+		return NULL;
+	}
+
+	//Found the proper node
+	ListNode *p = malloc(sizeof(ListNode));
+
+	if(!p){
+		printf("Error occurred in allocating memory \n");
+		return NULL;
+	}
+
+
+	p->person = *person;
+	p->next = head->next;
+	head->next = p;
+	
+	return p;
+
+
 
 
 }
@@ -376,3 +433,6 @@ int removeStudents(ListNode **head)
 
 }
 
+int main(){
+	return 0;
+}
