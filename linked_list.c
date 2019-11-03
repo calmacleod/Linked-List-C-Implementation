@@ -65,7 +65,10 @@ ListNode *insertToList(ListNode **head, PersonInfo *person)
 
 		p->next = NULL;
 		p->person = *person;
-		return p;
+
+		(*head) = p;
+
+		return (*head);
 
 	}
 
@@ -80,7 +83,7 @@ ListNode *insertToList(ListNode **head, PersonInfo *person)
 	p->person = *person;
 	p->next = (*head);
 
-	return p;
+	return (*head);
 
 }
 
@@ -179,7 +182,22 @@ int deleteFromList(ListNode **head, PersonInfo *person)
 {
 
 	// add code
+	if(!(*head)){
+		printf("Error \n");
+		return 0;
+	}
 
+	if( &(*head)->person ){
+		person = &(*head)->person;	
+	}
+	
+	ListNode *p = (*head);
+	
+	*head = (*head)->next;
+
+	free(p);
+
+	return 1;
 
 
 }
@@ -213,7 +231,7 @@ Assumptions
 int deleteNodeByName(ListNode **head, char *familyName, PersonInfo *person)
 {
 	// add code 
-	//Bananas are bad
+
 
 }
 /************************************************************************/
@@ -238,7 +256,6 @@ Assumptions
 void deleteList(ListNode **head)
 {
 	// add code 
-
 
 }
 
@@ -288,7 +305,12 @@ head - the head of the list
 void printList(ListNode *head)
 {
 	// add code 
-
+	while (head->next){
+		if(&head->person){
+				printEmployee(&head->person);
+		}
+		head = head->next;
+	}
 
 }
 
@@ -431,8 +453,4 @@ int removeStudents(ListNode **head)
 
 {
 
-}
-
-int main(){
-	return 0;
 }

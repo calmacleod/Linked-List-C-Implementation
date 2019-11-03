@@ -31,6 +31,9 @@ void populatePerson(PersonInfo *person);
 
 int main(int argc, char* argv[])
 {
+	printf("Atleast it's working right??\n");
+
+
 	PersonInfo person;
 	ListNode *head = NULL;
 	ListNode *newListHead = NULL;
@@ -45,9 +48,9 @@ int main(int argc, char* argv[])
 		p = insertToList(&head,  &person);
 	}
 
-
+	
 	printList(head);
-
+	/*
 	printf("\n\n test insert after \n");
 
 	if (p != NULL) {
@@ -104,7 +107,7 @@ int main(int argc, char* argv[])
 	deleteList(&head);
 	deleteList(&newListHead);
 	//	getchar();
-
+	*/
 
 	return 0;
 }
