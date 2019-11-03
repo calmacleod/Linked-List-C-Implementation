@@ -51,11 +51,11 @@ Assumptions
 
 ListNode *insertToList(ListNode **head, PersonInfo *person)
 {
-	// add code
-   //
-
+	
+	//If Head is null
 	if(!*head){
 
+		//Allocate memory for a new node
 		ListNode *p = malloc(sizeof(ListNode));
 
 		if(!p){
@@ -63,16 +63,18 @@ ListNode *insertToList(ListNode **head, PersonInfo *person)
 			return NULL;
 		}
 
+		//Set the properties
 		p->next = NULL;
 		p->person = *person;
 
+		//Point head to p
 		(*head) = p;
 
 		return (*head);
 
 	}
 
-
+	//Make new node
 	ListNode *p = malloc(sizeof(ListNode));
 
 	if(!p){
@@ -80,10 +82,13 @@ ListNode *insertToList(ListNode **head, PersonInfo *person)
 		return NULL;
 	}
 
-	p->person = *person;
-	p->next = (*head);
+	//Set properties
+	p->person = *person;	
+	p->next = (*head)->next;
+	(*head)->next = p;
 
-	return (*head);
+	//Return that bitch
+	return (p);
 
 }
 
@@ -116,17 +121,20 @@ person is not NULL
 ListNode *insertAfter(ListNode *head, char *familyName, PersonInfo *person)
 {
 
+	printf("Inserting Node After: %s\n",familyName);
+
+
 	int flag = 1;
 
 	//Find Proper Node
 	do{
-		if(  strcmp(head->person.familyName, person->familyName)){
+		if(  strcmp(head->person.familyName, familyName)==0 ){
 			flag = 0;
 			break;
 		}
 		head = head->next;
 
-	} while(head->next);
+	} while(head);
 
 	//Check if we found a spot
 	if(flag){
@@ -178,23 +186,31 @@ Assumptions
 
 
 int deleteFromList(ListNode **head, PersonInfo *person)
-
 {
-
-	// add code
+	//If Head is NULL
 	if(!(*head)){
 		printf("Error \n");
 		return 0;
 	}
 
+	//If person is not NULL
 	if( &(*head)->person ){
 		person = &(*head)->person;	
 	}
 	
+	//If Head is only node in list
+	if(   !(*head)->next  ){
+		free( *head );
+		return 1;
+	}
+
+	//p is reference to head
 	ListNode *p = (*head);
-	
+
+	//Move head to the next one
 	*head = (*head)->next;
 
+	//Free the original head
 	free(p);
 
 	return 1;
@@ -305,12 +321,23 @@ head - the head of the list
 void printList(ListNode *head)
 {
 	// add code 
-	while (head->next){
+
+	if(!head){
+		return;
+	}
+
+
+	do{
+
 		if(&head->person){
 				printEmployee(&head->person);
 		}
+
 		head = head->next;
-	}
+
+	} while (head);
+
+	
 
 }
 

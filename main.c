@@ -31,9 +31,6 @@ void populatePerson(PersonInfo *person);
 
 int main(int argc, char* argv[])
 {
-	printf("Atleast it's working right??\n");
-
-
 	PersonInfo person;
 	ListNode *head = NULL;
 	ListNode *newListHead = NULL;
@@ -42,14 +39,49 @@ int main(int argc, char* argv[])
 	int i;
     int rc = 0;
 	
+
 	for (i = 0; i < 20; i++) {
 	// add code for testing
 		populatePerson(&person);
 		p = insertToList(&head,  &person);
 	}
-
 	
+	printf("\n\nPrinting List: \n");
+
 	printList(head);
+	
+
+	printf("\n\nInsert After Tests: \n");
+
+	populatePerson(&person);
+
+	PersonInfo p2;
+	populatePerson(&p2);
+
+	printf("Employee we're adding to list: \n");
+	printEmployee(&person);
+	printf("\nThe List: \n");
+
+	char str[] = "MacLeod";
+
+	//p = insertAfter(head, p2.familyName, &person);
+	p = insertAfter(head, p2.familyName, &person);
+
+	printList(head);
+
+
+
+	printf("\n\nDeleting Nodes and Printing: \n");
+
+	PersonInfo *pi = NULL;
+
+
+
+	for(i=0; i<20; i++){
+		deleteFromList(&head, pi);
+	}
+	
+
 	/*
 	printf("\n\n test insert after \n");
 
