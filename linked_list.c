@@ -243,10 +243,60 @@ Assumptions
 
 */
 
-
+//TODO: Change while loop, should be next next node, not current node
 int deleteNodeByName(ListNode **head, char *familyName, PersonInfo *person)
 {
+	//Make sure it's not the head
+	if( strcmp((*head)->person.familyName, familyName) == 0  ){
+
+		ListNode *p = (*head);
+		(*head) = (*head)->next;
+		person = &p->person;
+		free(p);
+		return 0;	
+	}
+
+
 	// add code 
+	int flag = 1;
+
+	//Hold first position
+	ListNode *headHolder = (*head);
+
+	do{
+		if( strcmp((*head)->next->person.familyName, familyName) == 0 ){
+			flag = 0;
+			break;	
+		}
+		(*head) = (*head)->next;
+	} while((*head)->next);
+
+	//No Suitable Node was found
+	if(flag){
+	;
+		(*head) = headHolder;
+		return 1;
+	}
+
+
+	//If suitable node was found, and person is not NULL
+	if( &(*head)->next->person ){
+		*person = ((*head)->next->person);
+	}
+	
+	//Save the next node so you don't lose ref
+	ListNode *temp = (*head)->next->next;
+
+	//Free the deleted node
+	free((*head)->next);
+
+	//Fix Next
+	(*head)->next = temp;
+	
+	//Reset Head to the first node
+	(*head) = headHolder;
+
+	return 0;
 
 
 }
@@ -429,11 +479,8 @@ Assumptions:
 
 */
 int copyList(ListNode *head, ListNode **newListHead)
-
 {
-
-
-
+	return 0;
 }
 /************************************************************************/
 /*
@@ -454,8 +501,7 @@ Assumptions:
 */
 int copyListRecursive(ListNode *head, ListNode **newListHead)
 {
-
-
+	return 0;
 }
 
 /************************************************************************/
@@ -477,7 +523,6 @@ Assumptions
 */
 
 int removeStudents(ListNode **head)
-
 {
-
+	return 0;
 }

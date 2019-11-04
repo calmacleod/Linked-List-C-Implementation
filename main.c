@@ -62,10 +62,10 @@ int main(int argc, char* argv[])
 	printEmployee(&person);
 	printf("\nThe List: \n");
 
-	char str[] = "MacLeod";
+	char str[] = "Broker";
 
 	//p = insertAfter(head, p2.familyName, &person);
-	p = insertAfter(head, p2.familyName, &person);
+	p = insertAfter(head, str, &person);
 
 	printList(head);
 
@@ -73,10 +73,22 @@ int main(int argc, char* argv[])
 
 	printf("\n\nDeleting Nodes and Printing: \n");
 
+	PersonInfo *p3;
+
+	deleteNodeByName(&head, str, p3);
+
+	printf("\n\n");
+
+	printEmployee(p3);
+
+	printf("\nList After Deletion: \n");
+	 
+	printList(head);
+
 	PersonInfo *pi = NULL;
 
-
-
+	printf("\nCleaning list\n");
+	
 	for(i=0; i<20; i++){
 		deleteFromList(&head, pi);
 	}
