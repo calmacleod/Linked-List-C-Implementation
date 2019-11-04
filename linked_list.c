@@ -351,10 +351,15 @@ Assumptions
 
 ListNode *searchByName(ListNode *head, char *familyName, PersonInfo *person)
 {
-	// add code 
+	do{
+		if(!strcmp(head->person.familyName, familyName)){
+			*person = head->person;
+			return head;
+		}
+		head = head->next;
+	} while(head);
 
-
-
+	return NULL;
 }
 
 
@@ -370,8 +375,6 @@ head - the head of the list
 
 void printList(ListNode *head)
 {
-	// add code 
-
 	if(!head){
 		return;
 	}
@@ -408,10 +411,12 @@ None
 
 void printStudents(ListNode *head)
 {
-	// add code 
-
-
-
+	do{
+		if(head->person.empOrStudent == 2){
+			printStudent(&head->person);
+			head = head->next;
+		}
+	}while(head);
 
 }
 /************************************************************************/
@@ -431,9 +436,12 @@ None
 
 void printEmployees(ListNode *head)
 {
-	// add code 
-
-
+	do{
+		if(head->person.empOrStudent == 1){
+			printEmployee(&head->person);
+			head = head->next;
+		}
+	}while(head);
 }
 
 
@@ -453,8 +461,13 @@ unsigned int listSize(ListNode *head)
 {
 	// add code 
 
+	int count = 1;
 
+	if(head->next){
+		return count += listSize(head->next);
+	}
 
+	return 0;
 }
 
 

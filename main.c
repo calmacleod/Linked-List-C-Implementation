@@ -39,60 +39,22 @@ int main(int argc, char* argv[])
 	int i;
     int rc = 0;
 	
-
 	for (i = 0; i < 20; i++) {
 	// add code for testing
 		populatePerson(&person);
 		p = insertToList(&head,  &person);
 	}
 	
-	printf("\n\nPrinting List: \n");
-
 	printList(head);
 	
-
-	printf("\n\nInsert After Tests: \n");
-
-	populatePerson(&person);
-
-	PersonInfo p2;
-	populatePerson(&p2);
-
-	printf("Employee we're adding to list: \n");
-	printEmployee(&person);
-	printf("\nThe List: \n");
-
-	char str[] = "Broker";
-
-	//p = insertAfter(head, p2.familyName, &person);
-	p = insertAfter(head, str, &person);
-
-	printList(head);
-
-
-
-	printf("\n\nDeleting Nodes and Printing: \n");
-
-	PersonInfo *p3;
-
-	deleteNodeByName(&head, str, p3);
-
-	printf("\n\n");
-
-	printEmployee(p3);
-
-	printf("\nList After Deletion: \n");
-	 
-	printList(head);
-
 	PersonInfo *pi = NULL;
 
-	printf("\nCleaning list\n");
-	
 	for(i=0; i<20; i++){
 		deleteFromList(&head, pi);
 	}
-	
+
+	free(p);
+	free(pi);
 
 	/*
 	printf("\n\n test insert after \n");
