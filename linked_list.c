@@ -201,6 +201,7 @@ int deleteFromList(ListNode **head, PersonInfo *person)
 	//If Head is only node in list
 	if(   !(*head)->next  ){
 		free( *head );
+		(*head) = NULL;
 		return 1;
 	}
 
@@ -321,7 +322,25 @@ Assumptions
 
 void deleteList(ListNode **head)
 {
-	// add code 
+	//Head is null
+	if(!(*head)){
+		return;
+	}
+
+	//Head is the last node in the list || Base Case
+	if(!(*head)->next){
+		free((*head));
+		return;
+	}
+
+	//Recursive Step
+	deleteList(&(*head)->next);
+
+	//Post Condition
+	free((*head));
+
+
+
 
 }
 
@@ -352,7 +371,7 @@ Assumptions
 ListNode *searchByName(ListNode *head, char *familyName, PersonInfo *person)
 {
 	do{
-		if(!strcmp(head->person.familyName, familyName)){
+		if(strcmp(head->person.familyName, familyName) == 0){
 			*person = head->person;
 			return head;
 		}
@@ -379,13 +398,10 @@ void printList(ListNode *head)
 		return;
 	}
 
-
 	do{
-
 		if(&head->person){
 				printEmployee(&head->person);
 		}
-
 		head = head->next;
 
 	} while (head);
@@ -411,11 +427,14 @@ None
 
 void printStudents(ListNode *head)
 {
+	if(!head){
+		return;
+	}
 	do{
 		if(head->person.empOrStudent == 2){
 			printStudent(&head->person);
-			head = head->next;
 		}
+		head = head->next;
 	}while(head);
 
 }
@@ -436,11 +455,14 @@ None
 
 void printEmployees(ListNode *head)
 {
+	if(!head){
+		return;
+	}
 	do{
 		if(head->person.empOrStudent == 1){
 			printEmployee(&head->person);
-			head = head->next;
 		}
+		head = head->next;
 	}while(head);
 }
 
@@ -460,17 +482,15 @@ the number of nodes in the list
 unsigned int listSize(ListNode *head)
 {
 	// add code 
-
-	int count = 1;
-
+	int count = 0;
+	if(head){
+		count++;
+	}
 	if(head->next){
 		return count += listSize(head->next);
 	}
-
-	return 0;
+	return count;
 }
-
-
 
 
 /************************************************************************/
@@ -493,6 +513,10 @@ Assumptions:
 */
 int copyList(ListNode *head, ListNode **newListHead)
 {
+	ListNode *newPoint = (*newListHead);
+
+
+
 	return 0;
 }
 /************************************************************************/
