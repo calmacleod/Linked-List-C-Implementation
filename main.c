@@ -40,44 +40,22 @@ int main(int argc, char* argv[])
 	int i;
     int rc = 0;
 	
-	
 	for (i = 0; i < 20; i++) {
-	// add code for testing
 		populatePerson(&person);
 		p = insertToList(&head,  &person);
 	}
-	
-	printf("\nPrinting List: \n");
-	printList(head);
 
-	printf("\n\nSearching For Name: \n\n");
-	
 
-	PersonInfo searchName;
-	p = searchByName(head, "Green", &searchName);
+	printf("Trying to Copy the List\n");
 
-	printf("\nPrinting Found Employee: \n");
-	printEmployee(&searchName);
+	int suc = copyList(head, &newListHead);
 
-	printf("\n\n Printing Employees: \n");
-	printEmployees(head);
+	printf("Success Code: %d\n", suc);
 
-	printf("\n\n Printing Students: \n");
-	printStudents(head);
 
-	printf("\n\n Getting Sizze of the list hopefully: \n");
-	unsigned int a = listSize(head);
-	printf("Found Size of List: %u\n",a);
-	/*
-	PersonInfo *pi = NULL;
-
-	for(i=0; i<20; i++){
-		deleteFromList(&head, pi);
-	}
-	*/
 
 	deleteList(&head);
-
+	deleteList(&newListHead);
 
 
 	/*

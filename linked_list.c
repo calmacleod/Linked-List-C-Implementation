@@ -513,9 +513,28 @@ Assumptions:
 */
 int copyList(ListNode *head, ListNode **newListHead)
 {
-	ListNode *newPoint = (*newListHead);
+	//Allocate first node
+	//Go into loop
+	//Make new node that is head->next
 
 
+	(*newListHead) = malloc(sizeof(ListNode));
+
+	(*newListHead)->person = head->person;
+
+	ListNode *nextNode = (*newListHead);
+
+	head = head->next;
+
+	while(head){
+		ListNode *holder = malloc(sizeof(ListNode));
+		holder->person = head->person;
+		nextNode->next = holder;
+		head = head->next;
+
+		//printEmployee(&holder->person);
+
+	}
 
 	return 0;
 }
