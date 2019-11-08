@@ -45,17 +45,35 @@ int main(int argc, char* argv[])
 		p = insertToList(&head,  &person);
 	}
 
+	printf("Printing List: \n");
 
-	printf("Trying to Copy the List\n");
+	int firstSize = listSize(head);
+	printf("Size Before Deleteing: %d\n", firstSize);
 
-	int suc = copyList(head, &newListHead);
+	printList(head);
 
-	printf("Success Code: %d\n", suc);
+	printf("Printing all students: \n");
+	printStudents(head);
+
+	printf("\n\n Deleting Students List: \n");
+
+	removeStudents(&head);
+
+	printList(head);
+
+	int sizeOfList = listSize(head);
+
+	printf("\nSize of the newlist: %d\n", sizeOfList);
+
+	printf("\nStudents After Deleting: \n");
+	printStudents(head);
 
 
 
 	deleteList(&head);
-	deleteList(&newListHead);
+
+
+	//deleteList(&newListHead);
 
 
 	/*

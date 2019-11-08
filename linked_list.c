@@ -339,9 +339,6 @@ void deleteList(ListNode **head)
 	//Post Condition
 	free((*head));
 
-
-
-
 }
 
 
@@ -400,7 +397,12 @@ void printList(ListNode *head)
 
 	do{
 		if(&head->person){
-				printEmployee(&head->person);
+				if(head->person.empOrStudent == 2){
+					printStudent(&head->person);
+				}
+				else{
+					printEmployee(&head->person);
+				}
 		}
 		head = head->next;
 
@@ -423,7 +425,6 @@ None
 Return
 None
 */
-
 
 void printStudents(ListNode *head)
 {
@@ -511,6 +512,7 @@ Assumptions:
 
 
 */
+//DONe
 int copyList(ListNode *head, ListNode **newListHead)
 {
 	//Allocate first node
@@ -519,6 +521,11 @@ int copyList(ListNode *head, ListNode **newListHead)
 
 
 	(*newListHead) = malloc(sizeof(ListNode));
+	(*newListHead)->next = NULL;
+	if(!(*newListHead)){
+		return 1;
+	}
+
 
 	(*newListHead)->person = head->person;
 
@@ -528,10 +535,18 @@ int copyList(ListNode *head, ListNode **newListHead)
 
 	while(head){
 		ListNode *holder = malloc(sizeof(ListNode));
+		holder->next = NULL;
+
+		if(!holder){
+			return 1;
+		}
+
+
 		holder->person = head->person;
 		nextNode->next = holder;
 		head = head->next;
 
+		nextNode = nextNode->next;
 		//printEmployee(&holder->person);
 
 	}
@@ -557,6 +572,15 @@ Assumptions:
 */
 int copyListRecursive(ListNode *head, ListNode **newListHead)
 {
+	(*newListHead) = malloc(sizeof(ListNode));
+
+	(*newListHead)->person = head->person;
+	(*newListHead)->next = NULL;
+
+	if(head->next){
+		copyListRecursive(head->next, &(*newListHead)->next);
+	}
+
 	return 0;
 }
 
@@ -578,7 +602,54 @@ Assumptions
 
 */
 
+//TODO: FIX 1 STUDENT NOT BEING DELETED
 int removeStudents(ListNode **head)
 {
+
+	if((*head)->person.empOrStudent == 2){
+		ListNode *point = (*head);
+		(*head) =  (*head)->next;
+		free(point);
+	}
+
+	ListNode *hold = (*head);
+
+	while( hold->next  ){
+
+		if(hold->next->person.empOrStudent == 2){
+
+			ListNode *temp = NULL;
+			if( hold->next->next ){
+				temp = hold->next->next;
+			}
+
+			ListNode *deleteNode = NULL;
+			deleteNode = hold->next;
+
+			hold->next = temp;
+		
+			hold = hold->next;
+
+			free(deleteNode);
+		}
+
+		hold = hold->next;
+	}
+
+
 	return 0;
+}
+
+/******************************** PART II ************************************************/
+
+
+
+
+void generalTraver(ListNode *head, void (*fPtr)(ListNode*) ){
+	fPtr(head);
+	
+	if(head->next){
+		generalTraver(head->next, fPtr);
+	}
+
 }
