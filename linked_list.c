@@ -51,13 +51,12 @@ Assumptions
 
 ListNode *insertToList(ListNode **head, PersonInfo *person)
 {
-	
 	//If Head is null
 	if(!*head){
 
 		//Allocate memory for a new node
 		ListNode *p = malloc(sizeof(ListNode));
-
+		
 		if(!p){
 			printf("An Error has occured in allocating memory\n");
 			return NULL;
@@ -77,16 +76,16 @@ ListNode *insertToList(ListNode **head, PersonInfo *person)
 	//Make new node
 	ListNode *p = malloc(sizeof(ListNode));
 
-	if(!p){
-		printf("Error occurred in allocating memory \n");
+	if(!p){;
 		return NULL;
 	}
 
 	//Set properties
 	p->person = *person;	
-	p->next = (*head)->next;
-	(*head)->next = p;
 
+	p->next = (*head);
+	
+	(*head) = p;
 	//Return that bitch
 	return (p);
 
@@ -119,10 +118,11 @@ person is not NULL
 
 
 ListNode *insertAfter(ListNode *head, char *familyName, PersonInfo *person)
-{
-
-	printf("Inserting Node After: %s\n",familyName);
-
+{	
+	//If List is empty || Head is null
+	if(!head){
+		return NULL;
+	}
 
 	int flag = 1;
 
@@ -195,7 +195,7 @@ int deleteFromList(ListNode **head, PersonInfo *person)
 
 	//If person is not NULL
 	if( &(*head)->person ){
-		person = &(*head)->person;	
+		*person = (*head)->person;	
 	}
 	
 	//If Head is only node in list
@@ -244,63 +244,54 @@ Assumptions
 
 */
 
-//TODO: Change while loop, should be next next node, not current node
 int deleteNodeByName(ListNode **head, char *familyName, PersonInfo *person)
 {
-	//Make sure it's not the head
-	if( strcmp((*head)->person.familyName, familyName) == 0  ){
-
-		ListNode *p = (*head);
-		(*head) = (*head)->next;
-		person = &p->person;
-		free(p);
-		return 0;	
-	}
-
-
-	// add code 
-	int flag = 1;
-
-	//Hold first position
-	ListNode *headHolder = (*head);
-
-	do{
-		if( strcmp((*head)->next->person.familyName, familyName) == 0 ){
-			flag = 0;
-			break;	
-		}
-		(*head) = (*head)->next;
-	} while((*head)->next);
-
-	//No Suitable Node was found
-	if(flag){
-	;
-		(*head) = headHolder;
+	//If head is null || list is empty
+	if(!(*head)){
 		return 1;
 	}
 
+	//Tracker nodes needed for function
+	ListNode *hold = (*head);
+	ListNode *prev = NULL;
 
-	//If suitable node was found, and person is not NULL
-	if( &(*head)->next->person ){
-		*person = ((*head)->next->person);
+
+	while(hold){
+		//If the names match;	
+		if( strcmp(hold->person.familyName, familyName) == 0){
+			
+			//Save value
+			*person = hold->person;
+
+			//If theres a previous node we have to move up
+			if(prev){
+				prev->next = hold->next;
+			}
+			else{
+				(*head) = (*head)->next;
+			}
+
+			//Save node we're deleting
+			ListNode *del = hold;
+			
+			hold = hold->next;
+
+			free(del);
+
+			return 0;
+		}
+		else{
+			//Otherwise advance
+			prev = hold;
+			hold = hold->next;
+		}
 	}
-	
-	//Save the next node so you don't lose ref
-	ListNode *temp = (*head)->next->next;
 
-	//Free the deleted node
-	free((*head)->next);
-
-	//Fix Next
-	(*head)->next = temp;
-	
-	//Reset Head to the first node
-	(*head) = headHolder;
-
-	return 0;
-
+	//If nothing was found
+	return 1;
 
 }
+
 /************************************************************************/
 /*
 Purpose: deletes all nodes from the list
@@ -367,12 +358,18 @@ Assumptions
 
 ListNode *searchByName(ListNode *head, char *familyName, PersonInfo *person)
 {
+	if(!head){
+		return NULL;
+	}
+
 	do{
 		if(strcmp(head->person.familyName, familyName) == 0){
 			*person = head->person;
 			return head;
 		}
+
 		head = head->next;
+
 	} while(head);
 
 	return NULL;
@@ -391,15 +388,18 @@ head - the head of the list
 
 void printList(ListNode *head)
 {
+	//If head is null don't bother
 	if(!head){
 		return;
 	}
 
 	do{
+		//If the node has a person
 		if(&head->person){
-				if(head->person.empOrStudent == 2){
+				if(head->person.empOrStudent == STUDENT_TYPE){
 					printStudent(&head->person);
 				}
+
 				else{
 					printEmployee(&head->person);
 				}
@@ -428,11 +428,13 @@ None
 
 void printStudents(ListNode *head)
 {
+	//If head is null don't bother
 	if(!head){
 		return;
 	}
+
 	do{
-		if(head->person.empOrStudent == 2){
+		if(head->person.empOrStudent == STUDENT_TYPE){
 			printStudent(&head->person);
 		}
 		head = head->next;
@@ -456,11 +458,13 @@ None
 
 void printEmployees(ListNode *head)
 {
+	//If head is null don't bother
 	if(!head){
 		return;
 	}
+
 	do{
-		if(head->person.empOrStudent == 2){
+		if(head->person.empOrStudent == EMPLOYEE_TYPE){
 			printEmployee(&head->person);
 		}
 		head = head->next;
@@ -481,15 +485,21 @@ the number of nodes in the list
 
 
 unsigned int listSize(ListNode *head)
-{
-	// add code 
+{	
+	//Start with inital size of 0
 	int count = 0;
+
+	//If node isn't null count increases
 	if(head){
 		count++;
 	}
+	
+	//If there is another node to count add it recursively
 	if(head->next){
 		return count += listSize(head->next);
 	}
+
+	//Return final count
 	return count;
 }
 
@@ -512,43 +522,43 @@ Assumptions:
 
 
 */
-//DONe
+
 int copyList(ListNode *head, ListNode **newListHead)
 {
-	//Allocate first node
-	//Go into loop
-	//Make new node that is head->next
-
-
+	//Allocate memory for new node
 	(*newListHead) = malloc(sizeof(ListNode));
-	(*newListHead)->next = NULL;
+
 	if(!(*newListHead)){
 		return 1;
 	}
 
-
+	//Set Properties
+	(*newListHead)->next = NULL;
 	(*newListHead)->person = head->person;
 
+	//Make holder node so we can traverse without losing data
 	ListNode *nextNode = (*newListHead);
 
 	head = head->next;
 
 	while(head){
+		//Allocate
 		ListNode *holder = malloc(sizeof(ListNode));
-		holder->next = NULL;
 
 		if(!holder){
 			return 1;
 		}
 
-
+		//Set Properties
+		holder->next = NULL;
 		holder->person = head->person;
+
+		//Change counters
 		nextNode->next = holder;
 		head = head->next;
 
+		//Advance
 		nextNode = nextNode->next;
-		//printEmployee(&holder->person);
-
 	}
 
 	return 0;
@@ -572,11 +582,19 @@ Assumptions:
 */
 int copyListRecursive(ListNode *head, ListNode **newListHead)
 {
+	//Allocate memory for new list head
 	(*newListHead) = malloc(sizeof(ListNode));
 
+
+	if(!newListHead){
+		return 1;
+	}
+
+	//Set Properties of this new node
 	(*newListHead)->person = head->person;
 	(*newListHead)->next = NULL;
 
+	//If head has another node that needs copying
 	if(head->next){
 		copyListRecursive(head->next, &(*newListHead)->next);
 	}
@@ -602,41 +620,48 @@ Assumptions
 
 */
 
-//TODO: FIX 1 STUDENT NOT BEING DELETED
 int removeStudents(ListNode **head)
 {
-
-	if((*head)->person.empOrStudent == 1){
-		ListNode *point = (*head);
-		(*head) =  (*head)->next;
-		free(point);
+	//Check if head is null || list is empty
+	if(!(*head)){
+		return 1;
 	}
 
+	//Node needed to track indexes
 	ListNode *hold = (*head);
+	ListNode *prev = NULL;
 
-	while( hold->next  ){
+	while(hold){
 
-		if(hold->next->person.empOrStudent == 1){
-
-			ListNode *temp = NULL;
-			if( hold->next->next ){
-				temp = hold->next->next;
+		if(hold->person.empOrStudent == STUDENT_TYPE){
+			//If Prev is defined then make sure the right node is next
+			if(prev){
+				prev->next = hold->next;
 			}
 
-			ListNode *deleteNode = NULL;
-			deleteNode = hold->next;
+			//Otherwise move the head of the list up
+			else{
+				(*head) = (*head)->next;
+			}
 
-			hold->next = temp;
-		
-			hold = hold->next;
+			//Keep track of node we're deleting
+			ListNode *del = NULL;
+			del = hold;
 
-			free(deleteNode);
+			hold=hold->next;
+
+			free(del);
 		}
 
-		hold = hold->next;
+		else{
+			//If node was not student just move index up
+			prev = hold;
+			hold = hold->next;
+		}
+
 	}
 
-
+	//Success
 	return 0;
 }
 
@@ -645,7 +670,8 @@ int removeStudents(ListNode **head)
 
 
 
-void generalTraverse(ListNode *head, void (*fPtr)(PersonInfo*ptr) ){
+void generalTraverse(ListNode *head, void (*fPtr)(PersonInfo*ptr) )
+{
 	fPtr(&head->person);
 	
 	if(head->next){
@@ -654,7 +680,8 @@ void generalTraverse(ListNode *head, void (*fPtr)(PersonInfo*ptr) ){
 
 }
 
-void printStudentPtr(PersonInfo *pi){
+void printStudentPtr(PersonInfo *pi)
+{
 	if(pi->empOrStudent == 1){
 		printf("%s %s ID: %d CGPA: %f Required: %u Completed: %u \n", pi->firstName, pi->familyName, pi->id, pi->stu.gpa, pi->stu.numRequiredCourses, pi->stu.numCompletedCourses);
 	}

@@ -31,38 +31,81 @@ void populatePerson(PersonInfo *person);
 
 int main(int argc, char* argv[])
 {
-	
 	PersonInfo person;
 	ListNode *head = NULL;
-	ListNode *p = NULL;
-
+	ListNode *newListHead = NULL;
+	ListNode *p = NULL, *q = NULL;
     char familyName[64];
 	int i;
-
+    int rc = 0;
 	
 	for (i = 0; i < 20; i++) {
 		populatePerson(&person);
 		p = insertToList(&head,  &person);
 	}
 
-	printf("Printing List: \n");
 
 	printList(head);
 
-	printf("\nDeleting Name: Bronson\n\n");
+	printf("\n\n test insert after \n");
+
+	if (p != NULL) {
+		for (i = 0; i < 4; i++) {
+			populatePerson(&person);
+			p = insertAfter(head, p->person.familyName, &person);
+		}
+	}
+    
+	printList(head);
+    CONTINUE;
+    
+    // test delete after
+
+
+	rc = deleteNodeByName(&head, "Bronson", &person);
+    printf("deleteAfter rc = %d \n",rc);
+	printList(head);
+    CONTINUE;
+
+
+	p = searchByName(head, "Bronson", &person);
+	if (p != NULL) {
+		printf("\n found name to delete \n");
+		printEmployee(&p->person);
+		strncpy(familyName, p->person.familyName, NAME_LENGTH-1);
+        familyName[NAME_LENGTH-1] = '\0';
+		deleteNodeByName(&head, familyName, &person);
+	}
 	
-	PersonInfo *pi;
-	deleteFromList(&head, pi);
-
-	printf("\nPrinting Saved Person: \n");
-	printEmployee(pi);
-
-	printf("\nList After: \n");
 	printList(head);
+	CONTINUE;
 
+	printf("\n\n duplicate list \n\n");
+
+	printList(head);
+	copyListRecursive(head, &newListHead);
+
+	printf("\n\nNew List: \n\n");
+
+	printList(newListHead);
+	CONTINUE;
+
+
+	printf("\n\n print students \n\n");
+	printStudents(newListHead);
+
+	printf("\n\n print employees \n\n");
+	printEmployees(newListHead);
+	CONTINUE;
+
+	printf("\n\n remove students \n\n");
+	removeStudents(&newListHead);
+	printList(newListHead);
+	CONTINUE;
 
 	deleteList(&head);
-
+	deleteList(&newListHead);
+	//	getchar();
 
 
 	return 0;
