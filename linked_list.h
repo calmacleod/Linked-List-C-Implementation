@@ -75,4 +75,7 @@ int copyList(ListNode *head, ListNode **newListHead);
 int copyListRecursive(ListNode *head, ListNode **newListHead);
 int removeStudents(ListNode **head);
 
+//Part II Functions
+void generalTraverse(ListNode *head, void (*fPtr)(PersonInfo *ptr));
+void printStudentPtr(PersonInfo *pi);
 #endif

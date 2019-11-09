@@ -460,7 +460,7 @@ void printEmployees(ListNode *head)
 		return;
 	}
 	do{
-		if(head->person.empOrStudent == 1){
+		if(head->person.empOrStudent == 2){
 			printEmployee(&head->person);
 		}
 		head = head->next;
@@ -606,7 +606,7 @@ Assumptions
 int removeStudents(ListNode **head)
 {
 
-	if((*head)->person.empOrStudent == 2){
+	if((*head)->person.empOrStudent == 1){
 		ListNode *point = (*head);
 		(*head) =  (*head)->next;
 		free(point);
@@ -616,7 +616,7 @@ int removeStudents(ListNode **head)
 
 	while( hold->next  ){
 
-		if(hold->next->person.empOrStudent == 2){
+		if(hold->next->person.empOrStudent == 1){
 
 			ListNode *temp = NULL;
 			if( hold->next->next ){
@@ -645,11 +645,17 @@ int removeStudents(ListNode **head)
 
 
 
-void generalTraver(ListNode *head, void (*fPtr)(ListNode*) ){
-	fPtr(head);
+void generalTraverse(ListNode *head, void (*fPtr)(PersonInfo*ptr) ){
+	fPtr(&head->person);
 	
 	if(head->next){
-		generalTraver(head->next, fPtr);
+		generalTraverse(head->next, fPtr);
 	}
 
+}
+
+void printStudentPtr(PersonInfo *pi){
+	if(pi->empOrStudent == 1){
+		printf("%s %s ID: %d CGPA: %f Required: %u Completed: %u \n", pi->firstName, pi->familyName, pi->id, pi->stu.gpa, pi->stu.numRequiredCourses, pi->stu.numCompletedCourses);
+	}
 }

@@ -47,26 +47,13 @@ int main(int argc, char* argv[])
 
 	printf("Printing List: \n");
 
-	int firstSize = listSize(head);
-	printf("Size Before Deleteing: %d\n", firstSize);
-
 	printList(head);
 
-	printf("Printing all students: \n");
-	printStudents(head);
+	printf("\nTesting out Part 2 Funcs: \n\n");
+	
 
-	printf("\n\n Deleting Students List: \n");
 
-	removeStudents(&head);
-
-	printList(head);
-
-	int sizeOfList = listSize(head);
-
-	printf("\nSize of the newlist: %d\n", sizeOfList);
-
-	printf("\nStudents After Deleting: \n");
-	printStudents(head);
+	generalTraverse(head, printStudentPtr);
 
 
 
